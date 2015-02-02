@@ -8,3 +8,7 @@
 The dependencies for the project can be installed using
 
     $ pip install -r requirements.txt
+
+You can use ``Vagrant`` to start a machine with a MongoDB instance running
+
+    $ vagrant up
