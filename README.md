@@ -19,4 +19,4 @@ To initialize the database you need to download the data
 
 and import it
 
-    $ mongoimport -d donorschoose -c projects --type csv --file /vagrant/opendata_projects.csv -headerline
+    $ mongoimport -d donorschoose -c projects --type csv --file /vagrant/opendata_projects.csv --headerline
