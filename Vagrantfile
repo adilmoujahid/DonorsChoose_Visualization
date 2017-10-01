@@ -10,7 +10,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # please see the online documentation at vagrantup.com.
 
   # Every Vagrant virtual environment requires a box to build off of.
-  config.vm.box = "puphpet/debian75-x64"
+  # upgrade from puphpet/debian75-x64 to debian/jessie64
+  config.vm.box = "debian/jessie64"
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
@@ -23,6 +24,29 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # accessing "localhost:8080" will access port 80 on the guest machine.
   config.vm.network "forwarded_port", guest: 27017, host: 27017
 
-  # install MongoDB (bind to all the interface, SECURITY ISSUES HERE!!!!)
-  config.vm.provision "shell", inline: "apt-get update && apt-get install -y mongodb && sed -i 's/bind_ip = 127.0.0.1/bind_ip = 0.0.0.0/' /etc/mongodb.conf && service mongodb restart"
+  # Set the base box requirements
+  config.vm.provision "shell" do |s|
+  s.inline = <<-SHELL
+
+  # Install MongoDB - https://docs.mongodb.com/manual/tutorial/install-mongodb-enterprise-on-debian/
+
+  # Import the MongoDB public GPG Key    
+  apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 0C49F3730359A14518585931BC711F9BA15703C6
+
+  # Create the list file
+  echo "deb http://repo.mongodb.com/apt/debian jessie/mongodb-enterprise/3.4 main" | tee /etc/apt/sources.list.d/mongodb-enterprise.list
+
+  # Reload local package database
+  apt-get update
+
+  # Install the latest stable version of MongoDB Enterprise.
+  apt-get install -y mongodb-enterprise
+
+  # Set bind ips on config files - https://docs.mongodb.com/manual/reference/configuration-options/ 
+  sed -i 's/bindIp = 127.0.0.1/bindIp = 0.0.0.0/' /etc/mongod.conf     
+
+  # Restart MongoDB
+  service mongod restart
+
+  SHELL
 end

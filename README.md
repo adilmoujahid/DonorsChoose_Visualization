@@ -13,10 +13,12 @@ You can use ``Vagrant`` to start a machine with a MongoDB instance running
 
     $ vagrant up
 
-To initialize the database you need to download the data
+Per October 2016 the Donorchoose Opendata can be downloaded from [here](https://research.donorschoose.org/t/download-opendata/33)
 
-    $ wget https://s3.amazonaws.com/open_data/csv/opendata_projects.zip && unzip opendata_projects.zip
+Download, extract and rename the dataset (approx. 204 MB compressed and 650 MB when extracted).
 
-and import it
+    $ wget http://s3.amazonaws.com/open_data/opendata_projects000.gz && zcat opendata_projects000.gz > opendata_projects000.csv
+ 
+To initialize the database you need to imports the csv formatted data into MongoDB collection. 
 
-    $ mongoimport -d donorschoose -c projects --type csv --file /vagrant/opendata_projects.csv -headerline
+    $ mongoimport --db donorschoose --collection projects --type csv --headerline --file /vagrant/opendata_projects000.csv 

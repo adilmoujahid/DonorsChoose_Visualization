@@ -1,6 +1,6 @@
-Flask==0.10.1
-Jinja2==2.7.3
-MarkupSafe==0.23
-Werkzeug==0.10
+Flask==0.12.2
+Jinja2==2.9.6
+MarkupSafe==1.0
+Werkzeug==0.12.2
 itsdangerous==0.24
-pymongo==2.8
+pymongo==3.5.1
